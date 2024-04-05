@@ -1,7 +1,21 @@
+import figlet from "figlet";
 
-const read = (text: string) => {
-    return text 
-}
+const server = Bun.serve({
+  port: 3000,
+  fetch(req) {
+    const url = new URL(req.url)
+    if(url.pathname === '/'){
+        const body = figlet.textSync('hola')
+        return new Response(body)
+    }
+    if(url.pathname === '/about'){
+        return new Response('About Me')
+    }
+    if(url.pathname === '/contact'){
+        return new Response('Contact Us!')
+    }
+    return new Response('404!')
+  },
+});
 
-const msg = read("Hello world@")
-console.log(msg);
+console.log(`server running on port ${server.port}`);
